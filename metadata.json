@@ -1,0 +1,6 @@
+{
+  "name": "TERRA",
+  "description": "Scientific exploration platform for discovering and evaluating terrestrial analogue environments for lunar and Martian research.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

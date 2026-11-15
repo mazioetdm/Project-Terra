@@ -1,0 +1,375 @@
+{
+  "_readme": "PLACEHOLDER FILE. Every metric with placeholder=true holds FAKE demo numbers so the app can be built. The app must show a red PLACEHOLDER banner while any placeholder is true, and nothing marked placeholder may ship. Replace p5/p50/p95, retrieved (ISO date), and set placeholder=false only with real extracted values. Use null + scored=false when a value could not be obtained.",
+  "schema_version": "0.1",
+  "scoring": {
+    "method": "histogram_overlap_per_metric",
+    "weights": {
+      "slope_deg": 0.5,
+      "roughness_m": 0.5,
+      "temp_diurnal_range_K": 0.0
+    },
+    "weights_note": "Slope and roughness are the scored core: same DEM method and window on both bodies. Temperature range is shown as context and has weight 0 by default because no Earth site can match permanently shadowed lunar temperatures and Diviner (240 m) and MODIS (1 km) differ in scale. Users may raise it with the slider only if real values are loaded. Missing metrics are not scored and never imputed. Index is relative, not a probability.",
+    "show_rank_stability": true
+  },
+  "global_limitations": [
+    "Earth cannot reproduce lunar gravity, vacuum, or radiation.",
+    "No Earth site matches permanently shadowed region temperatures.",
+    "Lunar 5 m DEM is about 90% interpolated; median RMS slope error about 1.5-2.5 deg. Resample both sides to 30 m.",
+    "Earth DEMs are surface models (vegetation/ice included); MODIS is 1 km, Diviner polar grids are 240 m.",
+    "Mineralogy is shown separately and is never part of the terrain score."
+  ],
+  "reference": {
+    "id": "moon_connecting_ridge",
+    "name": "Connecting Ridge (NASA Artemis III candidate region, Site01)",
+    "body": "Moon",
+    "centre": null,
+    "aoi": {
+      "shape": "footprint of Site01 slope GeoTIFF, clipped to 15x15 km about its centroid if larger",
+      "size_km": 15,
+      "bounds_polar_stereographic_xy_m": {
+        "xmin": null,
+        "xmax": null,
+        "ymin": null,
+        "ymax": null
+      },
+      "fill_from": "Read bounds from Site01_final_adj_5mpp_slp.tif header"
+    },
+    "coordinate_source": "https://pgda.gsfc.nasa.gov/products/78",
+    "metrics": {
+      "slope_deg": {
+        "unit": "deg",
+        "p5": 1,
+        "p50": 8,
+        "p95": 25,
+        "dataset": "LOLA 5 m slope map, Barker Site01 (Connecting ridge)",
+        "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_slp.tif",
+        "retrieved": null,
+        "placeholder": true,
+        "scored": true
+      },
+      "roughness_m": {
+        "unit": "m",
+        "p5": 0.1,
+        "p50": 0.5,
+        "p95": 2.0,
+        "dataset": "LOLA roughness map (LDRM)",
+        "url": "https://pgda.gsfc.nasa.gov/products/90",
+        "retrieved": null,
+        "placeholder": true,
+        "scored": true
+      },
+      "temp_diurnal_range_K": {
+        "unit": "K",
+        "p5": 100,
+        "p50": 200,
+        "p95": 300,
+        "dataset": "LRO Diviner south polar gridded products",
+        "url": "https://pds-geosciences.wustl.edu/missions/lro/diviner.htm",
+        "retrieved": null,
+        "placeholder": true,
+        "scored": true
+      }
+    },
+    "notes": "Pole lies on or near Shackleton's rim; AOI defined in polar-stereographic metres from NASA files, not IAU lat/lon."
+  },
+  "sites": [
+    {
+      "id": "kamestastin",
+      "name": "Kamestastin / Mistastin crater, Labrador, Canada",
+      "role": "terrain_and_mineralogy",
+      "centre": {
+        "lat": 55.883,
+        "lon": -63.3
+      },
+      "aoi": {
+        "shape": "circle",
+        "radius_km": 14,
+        "mask": "exclude lake (water) pixels",
+        "land_fraction_kept": null
+      },
+      "coordinate_source": "https://ares.jsc.nasa.gov/engagement/activities/resources/crater-comparisons/earth-impact-database.pdf",
+      "terrain_suitable": true,
+      "data_issues": [
+        "Central lake (~16 km) must be masked; MODIS LST invalid over water",
+        "Report land pixels kept"
+      ],
+      "metrics": {
+        "slope_deg": {
+          "unit": "deg",
+          "p5": 1,
+          "p50": 6,
+          "p95": 18,
+          "dataset": "Copernicus DEM GLO-30 (slope computed)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        },
+        "roughness_m": {
+          "unit": "m",
+          "p5": 0.2,
+          "p50": 0.7,
+          "p95": 2.5,
+          "dataset": "Copernicus DEM GLO-30 (RMS height residual, same window as Moon)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        },
+        "temp_diurnal_range_K": {
+          "unit": "K",
+          "p5": 40,
+          "p50": 55,
+          "p95": 75,
+          "dataset": "MODIS MOD11A1 v061 LST (day minus night)",
+          "url": "https://doi.org/10.5067/MODIS/MOD11A1.061",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        }
+      },
+      "mineralogy": {
+        "summary": "Anorthosite target rock, similar to lunar highlands; used for Artemis astronaut geology training.",
+        "agreement": "supported",
+        "references": [
+          "https://panow.com/?p=1778996"
+        ]
+      }
+    },
+    {
+      "id": "haughton",
+      "name": "Haughton crater, Devon Island, Nunavut, Canada",
+      "role": "terrain",
+      "centre": {
+        "lat": 75.383,
+        "lon": -89.667
+      },
+      "aoi": {
+        "shape": "circle",
+        "radius_km": 11.5,
+        "mask": null
+      },
+      "coordinate_source": "https://openpolar.no/Record/ftnasantrs:oai:casi.ntrs.nasa.gov:20050169531",
+      "terrain_suitable": true,
+      "data_issues": [
+        "Published centres disagree by up to ~20 km (75.2N vs 75.38N): confirm on hillshade",
+        "Above 60N: NASADEM does not cover, use GLO-30",
+        "MODIS polar-night/cloud gaps unverified"
+      ],
+      "metrics": {
+        "slope_deg": {
+          "unit": "deg",
+          "p5": 1,
+          "p50": 5,
+          "p95": 15,
+          "dataset": "Copernicus DEM GLO-30 (slope computed)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        },
+        "roughness_m": {
+          "unit": "m",
+          "p5": 0.1,
+          "p50": 0.6,
+          "p95": 2.0,
+          "dataset": "Copernicus DEM GLO-30 (RMS height residual, same window as Moon)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        },
+        "temp_diurnal_range_K": {
+          "unit": "K",
+          "p5": 30,
+          "p50": 45,
+          "p95": 60,
+          "dataset": "MODIS MOD11A1 v061 LST (day minus night)",
+          "url": "https://doi.org/10.5067/MODIS/MOD11A1.061",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        }
+      },
+      "mineralogy": null
+    },
+    {
+      "id": "taglang_la",
+      "name": "Taglang La pass, Ladakh, India",
+      "role": "terrain",
+      "centre": {
+        "lat": 33.5085,
+        "lon": 77.7714
+      },
+      "aoi": {
+        "shape": "square",
+        "size_km": 15,
+        "mask": null
+      },
+      "coordinate_source": "https://www.cambridge.org/core/journals/international-journal-of-astrobiology/article/ladakh-diverse-highaltitude-extreme-environments-for-offearth-analogue-and-astrobiology-research/F9FE95516A6B5D650333ABBCCF2F7512",
+      "terrain_suitable": true,
+      "data_issues": [
+        "Steep slopes may degrade DEM quality (unverified)",
+        "Mixed 1 km MODIS pixels over rough terrain",
+        "Source describes it as an early-Mars analogue; lunar link is weaker"
+      ],
+      "metrics": {
+        "slope_deg": {
+          "unit": "deg",
+          "p5": 2,
+          "p50": 12,
+          "p95": 35,
+          "dataset": "Copernicus DEM GLO-30 (slope computed)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        },
+        "roughness_m": {
+          "unit": "m",
+          "p5": 0.3,
+          "p50": 1.2,
+          "p95": 4.0,
+          "dataset": "Copernicus DEM GLO-30 (RMS height residual, same window as Moon)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        },
+        "temp_diurnal_range_K": {
+          "unit": "K",
+          "p5": 35,
+          "p50": 50,
+          "p95": 65,
+          "dataset": "MODIS MOD11A1 v061 LST (day minus night)",
+          "url": "https://doi.org/10.5067/MODIS/MOD11A1.061",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": true
+        }
+      },
+      "mineralogy": null
+    },
+    {
+      "id": "stillwater",
+      "name": "Stillwater Complex, Montana, USA",
+      "role": "mineralogy_only",
+      "centre": {
+        "lat": 45.3861,
+        "lon": -109.9031
+      },
+      "aoi": {
+        "shape": "square",
+        "size_km": 15,
+        "mask": null,
+        "note": "Optional terrain use only; 48 km belt, locate anorthosite on USGS I-797 map first"
+      },
+      "coordinate_source": "https://en.wikipedia.org/wiki/Stillwater_igneous_complex",
+      "terrain_suitable": false,
+      "data_issues": [
+        "15 km square can miss the anorthosite",
+        "Forest canopy biases surface models (unverified)"
+      ],
+      "metrics": {
+        "slope_deg": {
+          "unit": "deg",
+          "p5": 0,
+          "p50": 0,
+          "p95": 0,
+          "dataset": "Copernicus DEM GLO-30 (slope computed)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": false
+        },
+        "roughness_m": {
+          "unit": "m",
+          "p5": 0,
+          "p50": 0,
+          "p95": 0,
+          "dataset": "Copernicus DEM GLO-30 (RMS height residual, same window as Moon)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": false
+        },
+        "temp_diurnal_range_K": {
+          "unit": "K",
+          "p5": 0,
+          "p50": 0,
+          "p95": 0,
+          "dataset": "MODIS MOD11A1 v061 LST (day minus night)",
+          "url": "https://doi.org/10.5067/MODIS/MOD11A1.061",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": false
+        }
+      },
+      "mineralogy": {
+        "summary": "Anorthosite sheets in the Middle Banded series; basis of the LHS-1 highlands simulant, but a 2025 paper argues its plagioclase is less calcic than lunar anorthosite.",
+        "agreement": "disputed",
+        "references": [
+          "https://www.sciencefocus.com/space/moon-on-earth",
+          "https://msaweb.org/MSA/AmMin/AM_Preprints/9122RoyPreprint.pdf"
+        ]
+      }
+    },
+    {
+      "id": "miyake_jima",
+      "name": "Miyake-jima, Japan",
+      "role": "mineralogy_only",
+      "centre": {
+        "lat": 34.079,
+        "lon": 139.529
+      },
+      "aoi": null,
+      "coordinate_source": "https://wikiwand.com/en/Miyake-jima",
+      "terrain_suitable": false,
+      "data_issues": [
+        "Island ~8 km across; a 15 km square is mostly ocean"
+      ],
+      "metrics": {
+        "slope_deg": {
+          "unit": "deg",
+          "p5": 0,
+          "p50": 0,
+          "p95": 0,
+          "dataset": "Copernicus DEM GLO-30 (slope computed)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": false
+        },
+        "roughness_m": {
+          "unit": "m",
+          "p5": 0,
+          "p50": 0,
+          "p95": 0,
+          "dataset": "Copernicus DEM GLO-30 (RMS height residual, same window as Moon)",
+          "url": "https://registry.opendata.aws/copernicus-dem/",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": false
+        },
+        "temp_diurnal_range_K": {
+          "unit": "K",
+          "p5": 0,
+          "p50": 0,
+          "p95": 0,
+          "dataset": "MODIS MOD11A1 v061 LST (day minus night)",
+          "url": "https://doi.org/10.5067/MODIS/MOD11A1.061",
+          "retrieved": null,
+          "placeholder": true,
+          "scored": false
+        }
+      },
+      "mineralogy": {
+        "summary": "Anorthite megacrysts proposed as a lunar crustal material analog (composition and spectra).",
+        "agreement": "proposed",
+        "references": [
+          "https://doi.org/10.2138/am-2023-9122-a"
+        ]
+      }
+    }
+  ]
+}
